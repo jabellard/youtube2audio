@@ -10,6 +10,7 @@ from .models import Video
 from .serializers import VideoConvertSerializer
 from .settings import ALLOWED_AUDIO_FORMATS
 from .utils import parse_url
+from .utils import TaskError
 from .tasks import convert
 from celery.result import AsyncResult
 
@@ -71,8 +72,11 @@ class CheckConversionStatus(generics.RetrieveAPIView):
             )
         task_result = task_result.result
 
-        if isinstance(task_result, Response):
-            return task_result
+        if isinstance(task_result, TaskError):
+            return Response(
+                task_result.data,
+                task_result.status
+            )
 
         data['executed'] = True
         data['successful'] = True

@@ -4,26 +4,34 @@ import subprocess
 import shutil
 from celery import shared_task
 from django.conf import settings
-from rest_framework.response import Response
 from rest_framework import status
 from .settings import MAX_VIDEO_DURATION
 from .utils import get_video_info
 from .utils import generate_filename
+from .utils import TaskError
 
 
-@shared_task(time_limit=300)  # time limit in seconds
+# @shared_task(time_limit=300)  # time limit in seconds
+@shared_task
 def convert(url, audio_format):
+    return TaskError(
+        {
+            'details': 'Invalid URL.'
+        },
+        status=status.HTTP_400_BAD_REQUEST
+    )
+    '''
     info = get_video_info(url)
 
     if not info:
-        return Response(
+        return TaskError(
             {
                 'details': 'Invalid URL.'
             },
             status=status.HTTP_400_BAD_REQUEST
         )
     if info['duration'] > MAX_VIDEO_DURATION:
-        return Response(
+        return TaskError(
             {
                 'details': 'Video duration exceeds {0} minutes.'.format(MAX_VIDEO_DURATION / 60)
             },
@@ -47,12 +55,13 @@ def convert(url, audio_format):
     if result == 0:
         return data
 
-    return Response(
+    return TaskError(
         {
             'details': 'Internal server error.'
         },
         status=status.HTTP_500_INTERNAL_SERVER_ERROR
     )
+    '''
 
 
 def _convert(url, audio_filename, audio_format):

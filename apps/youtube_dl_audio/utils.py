@@ -2,6 +2,7 @@ from urllib.parse import urlencode
 from urllib.parse import urlparse
 from urllib.parse import urlunparse
 from urllib.parse import parse_qs
+from rest_framework import status
 import youtube_dl
 
 
@@ -26,3 +27,9 @@ def get_video_info(url):
 
 def generate_filename(youtube_id, audio_format):
     return '{0}.{1}'.format(youtube_id, audio_format)
+
+
+class TaskError:
+    def __init__(self, data={'details': 'OK.'}, status=status.HTTP_200_OK):
+        self.data = data
+        self.status = status
