@@ -1,5 +1,5 @@
 """
-WSGI config for youtube_dl_audio project.
+WSGI config for youtube2audio project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'youtube_dl_audio.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'youtube2audio.settings')
 
 application = get_wsgi_application()

@@ -6,3 +6,4 @@ Requirement/Importance levels:
 - [0] Use pipenv for virtual environment management
 - [0] Keep stats on vidoo conversions and downloads
 - [0] Implement throttiling policies
+- [1] Write unit tests
