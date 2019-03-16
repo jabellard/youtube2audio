@@ -1,4 +1,4 @@
-from urllib.parse import urlcode
+from urllib.parse import urlencode
 from urllib.parse import urlparse
 from urllib.parse import urlunparse
 from urllib.parse import parse_qs
@@ -19,7 +19,10 @@ def get_video_info(url):
 
     try:
         info = ydl.extract_info(url, download=False)
+        return info
     except Exception:
         return None
 
-    return info
+
+def generate_filename(youtube_id, audio_format):
+    return '{0}.{1}'.format(youtube_id, audio_format)

@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_extensions',
+    'djcelery',
     'corsheaders',
     # -------------------local----------------
     'apps.accounts',
@@ -72,6 +73,14 @@ INSTALLED_APPS = [
     'apps.youtube_dl_audio',
 ]
 
+# ==============================================================================
+# Celery
+# ==============================================================================
+BROKER_URL = os.getenv('BROKER_URL', 'amqp://guest:guest@127.0.0.1//')
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERYD_PREFETCH_MULTIPLIER = 1
+CELERY_ACKS_LATE = True
+# ------------------------------------------------------------------------------
 
 # ==============================================================================
 # Graph models

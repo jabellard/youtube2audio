@@ -1,33 +1,41 @@
+import os
+import uuid
+import subprocess
+import shutil
 from celery import shared_task
+from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
 from .settings import MAX_VIDEO_DURATION
 from .utils import get_video_info
+from .utils import generate_filename
 
 
-@shared_task(time_limit=300)
+@shared_task(time_limit=300)  # time limit in seconds
 def convert(url, audio_format):
     info = get_video_info(url)
 
     if not info:
         return Response(
             {
-                'details': 'Internal server error.'
+                'details': 'Invalid URL.'
             },
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            status=status.HTTP_400_BAD_REQUEST
         )
     if info['duration'] > MAX_VIDEO_DURATION:
         return Response(
             {
-                'details': 'Internal server error.'
+                'details': 'Video duration exceeds {0} minutes.'.format(MAX_VIDEO_DURATION / 60)
             },
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            status=status.HTTP_400_BAD_REQUEST
         )
-    audio_filename = generate_filename(info['id'], audio_format)
+
+    youtube_id = info['id']
+    audio_filename = generate_filename(youtube_id, audio_format)
     output_filepath = os.path.join(settings.MEDIA_ROOT, audio_filename)
 
     data = {
-        'youtube_id': info['id'],
+        'youtube_id': youtube_id,
         'audio_format': audio_format,
     }
 
@@ -51,17 +59,18 @@ def _convert(url, audio_filename, audio_format):
     tmp_filepath = os.path.join(settings.MEDIA_ROOT, '{0}_{1}'.format(uuid.uuid4(), audio_filename))
     output_filepath = os.path.join(settings.MEDIA_ROOT, audio_filename)
 
-    exit_code = subprocess.check_call([
-        'youtube-dl',
-        '--no-playlist',
-        '--extract-audio',
-        '--audio-format', audio_format,
-        '--output', tmp_filepath,
-        '--cache-dir', '/tmp/youtube_dl',
-        url,
-    ])
+    try:
+        exit_code = subprocess.check_call([
+            'youtube-dl',
+            '--no-playlist',
+            '--extract-audio',
+            '--audio-format', audio_format,
+            '--output', tmp_filepath,
+            url,
+        ])
+    except subprocess.CalledProcessError as e:
+        return e.returncode
 
-    if exit_code == 0:
-        shutil.move(tmp_filepath, output_filepath)
+    shutil.move(tmp_filepath, output_filepath)
 
     return exit_code

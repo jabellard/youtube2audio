@@ -1,5 +1,9 @@
-from rest_framework import generic
+import os
+from rest_framework import generics
+from django.conf import settings
+from django.http import HttpResponse
 from django.utils.encoding import smart_str
+from django.core.urlresolvers import reverse
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Video
@@ -11,12 +15,13 @@ from .tasks import convert
 
 class Convert(generics.CreateAPIView):
     serializer_class = VideoConvertSerializer
+    permission_classes = ()
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
-        if not request.data['audio_format'] in ALLOWED_AUDIO_FORMATS:
+        audio_format = request.data['audio_format]']
+        if not audio_format in ALLOWED_AUDIO_FORMATS:
             return Response(
                 {
                     'detail': 'Invalid audio format.'
@@ -26,18 +31,18 @@ class Convert(generics.CreateAPIView):
 
         url = parse_url(request.data['url'])
 
-        task = convert.delay(url)
+        task = convert.delay(url, audio_format)
 
         return Response(
             {
-                'task_id': task.task_id
+                'task_id': task.id
             },
             status=status.HTTP_200_OK
         )
 
 
 class CheckConversionStatus(generics.RetrieveAPIView):
-    serializer_class = None
+    permission_classes = ()
 
     def get(self, request, *args, **kwargs):
         task_id = self.kwargs['task_id']
@@ -87,11 +92,11 @@ class CheckConversionStatus(generics.RetrieveAPIView):
 
 
 class Download(generics.RetrieveAPIView):
-    serializer_class = None
+    permission_classes = ()
 
     def get(self, request, *args, **kwargs):
-        file_name = '{0}.{1}'.format(self.kwargs['youtube_id'], self.kwargs['audio_format'])
-        filepath = os.path.join(settings.MEDIA_ROOT, file_name)
+        filename = '{0}.{1}'.format(self.kwargs['youtube_id'], self.kwargs['audio_format'])
+        filepath = os.path.join(settings.MEDIA_ROOT, filename)
         file_exists = os.path.exists(filepath)
 
         if not file_exists:
@@ -105,5 +110,5 @@ class Download(generics.RetrieveAPIView):
         response = HttpResponse(content_type='application/force-download')
         response['Content-Length'] = os.path.getsize(filepath)
         response['X-Accel-Redirect'] = os.path.join(settings.MEDIA_URL,
-                                                    smart_str(file_name))
+                                                    smart_str(filename))
         return response

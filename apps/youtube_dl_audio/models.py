@@ -12,7 +12,7 @@ class Video(models.Model):
     youtube_id = models.CharField(
         null=False,
         unique=True,
-        max_length=100,
+        max_length=32,
     )
     last_downloaded = models.DateTimeField(
         null=True,
@@ -26,10 +26,10 @@ class Video(models.Model):
     objects = VideoManager()
 
     def __str__(self):
-        return '%s' % (self.youtube_id)
+        return '{0}'.format(self.youtube_id)
 
     def __unicode__(self):
-        return '%s' % (self.youtube_id)
+        return '{0}'.format(self.youtube_id)
 
     class Meta:
         verbose_name = 'video'
