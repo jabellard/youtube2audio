@@ -19,22 +19,13 @@ def parse_url(url):
 
 
 def get_video_info(url):
-    print('---------url----------------------')
-    print(url)
-    print('---------url----------------------')
     ydl = youtube_dl.YoutubeDL({'noplaylist': True})
     ydl.add_default_info_extractors()
 
     try:
         info = ydl.extract_info(url, download=False)
-        print('---------info----------------------')
-        print(info)
-        print('---------info----------------------')
         return info
-    except Exception as e:
-        print('---------error----------------------')
-        print(e)
-        print('---------error----------------------')
+    except Exception:
         return None
 
 
