@@ -3,7 +3,7 @@ from rest_framework import generics
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Video
@@ -11,6 +11,7 @@ from .serializers import VideoConvertSerializer
 from .settings import ALLOWED_AUDIO_FORMATS
 from .utils import parse_url
 from .tasks import convert
+from celery.result import AsyncResult
 
 
 class Convert(generics.CreateAPIView):
@@ -20,7 +21,7 @@ class Convert(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        audio_format = request.data['audio_format]']
+        audio_format = request.data['audio_format']
         if not audio_format in ALLOWED_AUDIO_FORMATS:
             return Response(
                 {
@@ -46,7 +47,7 @@ class CheckConversionStatus(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         task_id = self.kwargs['task_id']
-        task_result = AsyncResult(tast_id)
+        task_result = AsyncResult(task_id)
 
         data = {
             'task_id': task_id,
