@@ -112,8 +112,9 @@ class Download(generics.RetrieveAPIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        response = HttpResponse(content_type='application/force-download')
+        with open(filepath, 'rb') as audio_file:
+            response = HttpResponse(audio_file.read(), content_type='audio/*')
+
+        response['Content-Disposition'] = 'attachment; filename={0}'.format(smart_str(filename))
         response['Content-Length'] = os.path.getsize(filepath)
-        response['X-Accel-Redirect'] = os.path.join(settings.MEDIA_URL,
-                                                    smart_str(filename))
         return response

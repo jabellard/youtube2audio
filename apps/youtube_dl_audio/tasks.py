@@ -14,13 +14,6 @@ from .utils import TaskError
 # @shared_task(time_limit=300)  # time limit in seconds
 @shared_task
 def convert(url, audio_format):
-    return TaskError(
-        {
-            'details': 'Invalid URL.'
-        },
-        status=status.HTTP_400_BAD_REQUEST
-    )
-    '''
     info = get_video_info(url)
 
     if not info:
@@ -61,7 +54,6 @@ def convert(url, audio_format):
         },
         status=status.HTTP_500_INTERNAL_SERVER_ERROR
     )
-    '''
 
 
 def _convert(url, audio_filename, audio_format):

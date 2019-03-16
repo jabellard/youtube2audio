@@ -1,5 +1,6 @@
 ALLOWED_AUDIO_FORMATS = {
     'mp3',
+    'm4a',
 }
 
 MAX_VIDEO_DURATION = 99999999999999999  # in seconds

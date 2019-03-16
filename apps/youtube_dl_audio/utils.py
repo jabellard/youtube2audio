@@ -7,21 +7,34 @@ import youtube_dl
 
 
 def parse_url(url):
-    url = urlparse(url)
-    query = parse_qs(url.query)
-    query.pop('list', None)
-    url = url._replace(query=urlencode(query, True))
+    query = parse_qs(urlparse(url).query)
+
+    if 'list' in query:
+        query.pop('list')
+        url = url._replace(query=urlencode(query, True))
+        url = urlunparse(url)
+        return url
+
     return url
 
 
 def get_video_info(url):
+    print('---------url----------------------')
+    print(url)
+    print('---------url----------------------')
     ydl = youtube_dl.YoutubeDL({'noplaylist': True})
     ydl.add_default_info_extractors()
 
     try:
         info = ydl.extract_info(url, download=False)
+        print('---------info----------------------')
+        print(info)
+        print('---------info----------------------')
         return info
-    except Exception:
+    except Exception as e:
+        print('---------error----------------------')
+        print(e)
+        print('---------error----------------------')
         return None
 
 
