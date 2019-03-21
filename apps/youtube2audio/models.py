@@ -14,6 +14,9 @@ class Video(models.Model):
         unique=True,
         max_length=32,
     )
+    title = models.TextField(
+        null=True,
+    )
     last_downloaded = models.DateTimeField(
         null=True,
         default=None,

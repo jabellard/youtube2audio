@@ -9,6 +9,7 @@ from .settings import MAX_VIDEO_DURATION
 from .utils import get_video_info
 from .utils import generate_filename
 from .utils import TaskError
+from .models import Video
 
 
 # @shared_task(time_limit=300)  # time limit in seconds
@@ -32,6 +33,15 @@ def convert(url, audio_format):
         )
 
     youtube_id = info['id']
+    youtube_title = info['title']
+
+    try:
+        video = Video.objects.get(youtube_id=youtube_id)
+    except Video.DoesNotExist:
+        video = Video.objects.create(youtube_id=youtube_id)
+    video.title = youtube_title
+    video.save()
+
     audio_filename = generate_filename(youtube_id, audio_format)
     output_filepath = os.path.join(settings.MEDIA_ROOT, audio_filename)
 

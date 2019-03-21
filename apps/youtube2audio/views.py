@@ -11,6 +11,7 @@ from .serializers import VideoConvertSerializer
 from .settings import ALLOWED_AUDIO_FORMATS
 from .utils import parse_url
 from .utils import TaskError
+from .utils import get_video_info
 from .tasks import convert
 from celery.result import AsyncResult
 
@@ -35,9 +36,16 @@ class Convert(generics.CreateAPIView):
 
         task = convert.delay(url, audio_format)
 
+        conversion_status_link = reverse(
+            'check_conversion_status',
+            kwargs={
+                'task_id': task.id
+            }
+        )
+
         return Response(
             {
-                'task_id': task.id
+                'conversion_status_link': conversion_status_link
             },
             status=status.HTTP_200_OK
         )
@@ -100,7 +108,9 @@ class Download(generics.RetrieveAPIView):
     permission_classes = ()
 
     def get(self, request, *args, **kwargs):
-        filename = '{0}.{1}'.format(self.kwargs['youtube_id'], self.kwargs['audio_format'])
+        youtube_id = self.kwargs['youtube_id']
+        audio_format = self.kwargs['audio_format']
+        filename = '{0}.{1}'.format(youtube_id, audio_format)
         filepath = os.path.join(settings.MEDIA_ROOT, filename)
         file_exists = os.path.exists(filepath)
 
@@ -115,6 +125,23 @@ class Download(generics.RetrieveAPIView):
         with open(filepath, 'rb') as audio_file:
             response = HttpResponse(audio_file.read(), content_type='audio/*')
 
-        response['Content-Disposition'] = 'attachment; filename={0}'.format(smart_str(filename))
+        try:
+            video = Video.objects.get(youtube_id=youtube_id)
+        except Video.DoesNotExist:
+            video = Video.objects.create(youtube_id=youtube_id)
+
+        url = 'https://www.youtube.com/watch?v=' + youtube_id
+        info = get_video_info(url)
+        download_filename = filename
+        if info:
+            title = info['title']
+            download_filename = '{0}.{1}'.format(title, audio_format)
+            video.title = title
+
+        video.download_count += 1
+        video.save()
+
+        response['Content-Disposition'] = 'attachment; filename={0}'.format(
+            smart_str(download_filename))
         response['Content-Length'] = os.path.getsize(filepath)
         return response
