@@ -1,9 +1,5 @@
-'''
-from .handlers import execute_delete_expired_texts
-from .handlers import execute_sync_plans
+from .handlers import execute_delete_old_audio_files
 
 COMMANDS = {
-    'DELETE_EXPIRED_TEXTS': execute_delete_expired_texts,
-    'SYNC_PLANS': execute_sync_plans,
+    'DELETE_OLD_AUDIO_FILES': execute_delete_old_audio_files,
 }
-'''

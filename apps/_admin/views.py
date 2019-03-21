@@ -1,4 +1,3 @@
-'''
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -39,4 +38,3 @@ class Admin(generics.UpdateAPIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
-'''

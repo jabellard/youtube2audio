@@ -24,7 +24,7 @@ from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #url(r'^_admin/', include('apps._admin.urls')),
+    url(r'^_admin/', include('apps._admin.urls')),
     url(r'^downloader/', include('apps.youtube2audio.urls')),
     url(r'^docs/', include('apps.documentation.urls')),
 ]
