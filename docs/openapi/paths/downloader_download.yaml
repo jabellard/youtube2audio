@@ -1,4 +1,5 @@
 get:
+  security: []
   tags: []
   description: |
     Download an audio file.

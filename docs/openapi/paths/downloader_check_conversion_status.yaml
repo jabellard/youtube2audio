@@ -1,4 +1,5 @@
 get:
+  security: []
   tags: []
   description: |
     Check the status of a conversion request.

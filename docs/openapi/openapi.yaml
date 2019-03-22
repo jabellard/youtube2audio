@@ -1,0 +1,335 @@
+openapi: 3.0.0
+info:
+  title: youtube2audio API
+  description: youtube2audio API.
+  termsOfService: 'https://empty.com/terms_of_service'
+  contact:
+    name: Joe Nathan Abellard
+  version: 0.0.0
+servers:
+  - description: |
+      Production server.
+    url: 'htts://empty.com/api/'
+paths:
+  /downloader/convert:
+    post:
+      security: []
+      tags: []
+      description: |
+        Request a video to audio conversion.
+      operationId: downloader_convert_post
+      parameters: []
+      requestBody:
+        $ref: '#/components/requestBodies/convert'
+      responses:
+        '200':
+          $ref: '#/components/responses/convert'
+  '/downloader/check_conversion_status/{task_id}':
+    get:
+      security: []
+      tags: []
+      description: |
+        Check the status of a conversion request.
+      operationId: downloader_check_conversion_status_get
+      parameters:
+        - $ref: '#/components/parameters/task_id_p'
+      responses:
+        '200':
+          $ref: '#/components/responses/check_conversion_status'
+  '/downloader/download/{youtube_id}/{audio_format}':
+    get:
+      security: []
+      tags: []
+      description: |
+        Download an audio file.
+      operationId: downloader_download_get
+      parameters:
+        - $ref: '#/components/parameters/youtube_id_p'
+        - $ref: '#/components/parameters/audio_format_p'
+      responses:
+        '200':
+          description: |
+            OK.
+  /docs/coreapi:
+    get:
+      security: []
+      tags: []
+      description: |
+        Retrieve the coreapi interactive documentation for the API.
+      operationId: docs_coreapi_get
+      parameters: []
+      responses:
+        '200':
+          description: |
+            OK.
+  /docs/openapi:
+    get:
+      security: []
+      tags: []
+      description: |
+        Retrieve the Openapi  documentation for the API.
+      operationId: docs_openapi_get
+      parameters: []
+      responses:
+        '200':
+          description: |
+            OK.
+  /_admin:
+    put:
+      security: []
+      tags: []
+      description: |
+        API admin interface.
+      operationId: _admin_put
+      parameters: []
+      requestBody:
+        $ref: '#/components/requestBodies/command_put'
+      responses:
+        '200':
+          description: |
+            OK.
+components:
+  schemas:
+    check_conversion_status_res:
+      title: Conversion status response object.
+      description: |
+        Conversion status response object.
+      type: object
+      properties:
+        task_id:
+          description: |
+            Task ID of the conversion.
+          type: string
+          format: uuid
+        executed:
+          description: |
+            Indicates if the task completed.
+          type: boolean
+        successful:
+          description: |
+            Indicates if the task was executed successful.
+          type: boolean
+        download_link:
+          description: |
+            Download link for the audio file.
+          type: string
+          format: url
+    command_put:
+      title: Command object.
+      description: |
+        Command object.
+      type: object
+      properties:
+        cmd:
+          description: |
+            Command to execute.
+          type: string
+          format: string
+      required:
+        - cmd
+    convert_res:
+      title: Conversion request response object.
+      description: |
+        Conversion request response object.
+      type: object
+      properties:
+        conversion_status_link:
+          description: |
+            Link to check the status of the requested conversion.
+          type: string
+    convert:
+      title: Conversion request object.
+      description: |
+        Conversion request object.
+      type: object
+      properties:
+        url:
+          description: |
+            Youtube url.
+          type: string
+          format: url
+        audio_format:
+          description: |
+            Output audio format.
+          type: string
+          format: string
+      required:
+        - url
+        - audio_format
+  responses:
+    check_conversion_status:
+      description: |
+        Conversion status response object.
+      content:
+        application/json:
+          schema:
+            title: Conversion status response object.
+            description: |
+              Conversion status response object.
+            type: object
+            properties:
+              task_id:
+                description: |
+                  Task ID of the conversion.
+                type: string
+                format: uuid
+              executed:
+                description: |
+                  Indicates if the task completed.
+                type: boolean
+              successful:
+                description: |
+                  Indicates if the task was executed successful.
+                type: boolean
+              download_link:
+                description: |
+                  Download link for the audio file.
+                type: string
+                format: url
+          example:
+            description: |
+              Conversion status response object example.
+            value:
+              task_id: ''
+              executed: false
+              successful: false
+              download_link: ''
+    convert:
+      description: |
+        Conversion request response object.
+      content:
+        application/json:
+          schema:
+            title: Conversion request response object.
+            description: |
+              Conversion request response object.
+            type: object
+            properties:
+              conversion_status_link:
+                description: |
+                  Link to check the status of the requested conversion.
+                type: string
+          example:
+            description: |
+              Conversion request response object example.
+            value:
+              conversion_status_link: ''
+  parameters:
+    task_id_p:
+      name: task_id
+      in: path
+      required: true
+      description: |
+        Task ID of a conversion request.
+      schema:
+        type: string
+      style: simple
+    youtube_id_p:
+      name: youtube_id
+      in: path
+      required: true
+      description: |
+        Youtube video ID.
+      schema:
+        type: string
+      style: simple
+    audio_format_p:
+      name: audio_format
+      in: path
+      required: true
+      description: |
+        Output audio format.
+      schema:
+        type: string
+      style: simple
+  examples:
+    check_conversion_status_res:
+      description: |
+        Conversion status response object example.
+      value:
+        task_id: ''
+        executed: false
+        successful: false
+        download_link: ''
+    command_put:
+      description: |
+        Command object object example.
+      value:
+        cmd: ''
+    convert_res:
+      description: |
+        Conversion request response object example.
+      value:
+        conversion_status_link: ''
+    convert:
+      description: |
+        Conversion request object example.
+      value:
+        url: ''
+        audio_format: ''
+  requestBodies:
+    command_put:
+      description: |
+        Command request body.
+      content:
+        application/json:
+          schema:
+            title: Command object.
+            description: |
+              Command object.
+            type: object
+            properties:
+              cmd:
+                description: |
+                  Command to execute.
+                type: string
+                format: string
+            required:
+              - cmd
+          example:
+            description: |
+              Command object object example.
+            value:
+              cmd: ''
+      required: true
+    convert:
+      description: |
+        Conversion request body.
+      content:
+        application/json:
+          schema:
+            title: Conversion request object.
+            description: |
+              Conversion request object.
+            type: object
+            properties:
+              url:
+                description: |
+                  Youtube url.
+                type: string
+                format: url
+              audio_format:
+                description: |
+                  Output audio format.
+                type: string
+                format: string
+            required:
+              - url
+              - audio_format
+          example:
+            description: |
+              Conversion request object example.
+            value:
+              url: ''
+              audio_format: ''
+      required: true
+  securitySchemes:
+    token_auth:
+      type: http
+      description: >
+        "HTTP Bearer authentication. The value of the Authorization header must
+        be in the following format: Token [token]"
+      scheme: bearer
+security:
+  - token_auth: []
+

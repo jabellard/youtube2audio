@@ -1,5 +1,5 @@
-check_conversion_status:
-  $ref: './check_conversion_status.yaml'
+check_conversion_status_res:
+  $ref: './check_conversion_status_res.yaml'
 command_put:
   $ref: './command_put.yaml'
 convert_res:
