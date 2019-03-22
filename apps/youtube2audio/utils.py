@@ -24,14 +24,6 @@ def get_video_info(url):
 
     try:
         info = ydl.extract_info(url, download=False)
-        if 'title' in info:
-            print('-------------------------title info-----------------------')
-            print(info['title'])
-            print('------------------------- title info-----------------------')
-
-        print('-------------------------info-----------------------')
-        print(info)
-        print('-------------------------info-----------------------')
         return info
     except Exception:
         return None

@@ -13,12 +13,15 @@ from .utils import parse_url
 from .utils import TaskError
 from .utils import get_video_info
 from .tasks import convert
+from .throttles import BurstRateThrottle
+from .throttles import SustainedRateThrottle
 from celery.result import AsyncResult
 
 
 class Convert(generics.CreateAPIView):
     serializer_class = VideoConvertSerializer
     permission_classes = ()
+    throttle_classes = (SustainedRateThrottle,)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -106,6 +109,7 @@ class CheckConversionStatus(generics.RetrieveAPIView):
 
 class Download(generics.RetrieveAPIView):
     permission_classes = ()
+    throttle_classes = (SustainedRateThrottle,)
 
     def get(self, request, *args, **kwargs):
         youtube_id = self.kwargs['youtube_id']
