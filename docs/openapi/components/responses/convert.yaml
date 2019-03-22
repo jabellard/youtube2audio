@@ -1,0 +1,8 @@
+description: |
+  Conversion request response object.
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/convert_res.yaml'
+    example:
+      $ref: '../examples/convert_res.yaml'

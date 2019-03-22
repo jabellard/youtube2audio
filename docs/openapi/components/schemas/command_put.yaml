@@ -1,0 +1,12 @@
+title: Command object.
+description: |
+  Command object.
+type: object
+properties:
+  cmd:
+    description: |
+      Command to execute.
+    type: string
+    format: string
+required:
+  - cmd

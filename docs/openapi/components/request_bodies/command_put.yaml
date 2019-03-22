@@ -1,0 +1,9 @@
+description: |
+  Command request body.
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/command_put.yaml'
+    example:
+      $ref: '../examples/command_put.yaml'
+required: true

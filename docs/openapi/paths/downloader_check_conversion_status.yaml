@@ -1,0 +1,10 @@
+get:
+  tags: []
+  description: |
+    Check the status of a conversion request.
+  operationId: downloader_check_conversion_status_get
+  parameters:
+    - $ref: '#/components/parameters/task_id_p'
+  responses:
+    '200':
+      $ref: '#/components/responses/check_conversion_status'

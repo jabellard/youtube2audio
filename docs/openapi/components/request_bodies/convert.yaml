@@ -1,0 +1,9 @@
+description: |
+  Conversion request body.
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/convert.yaml'
+    example:
+      $ref: '../examples/convert.yaml'
+required: true

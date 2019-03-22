@@ -1,0 +1,12 @@
+get:
+  tags: []
+  description: |
+    Download an audio file.
+  operationId: downloader_download_get
+  parameters:
+    - $ref: '#/components/parameters/youtube_id_p'
+    - $ref: '#/components/parameters/audio_format_p'
+  responses:
+    '200':
+      description: |
+        OK.

@@ -1,0 +1,8 @@
+name: youtube_id
+in: path
+required: true
+description: |
+  Youtube video ID.
+schema:
+  type: string
+style: simple

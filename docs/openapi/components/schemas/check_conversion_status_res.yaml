@@ -1,0 +1,23 @@
+title: Conversion status response object.
+description: |
+  Conversion status response object.
+type: object
+properties:
+  task_id:
+    description: |
+      Task ID of the conversion.
+    type: string
+    format: uuid
+  executed:
+    description: |
+      Indicates if the task completed.
+    type: boolean
+  successful:
+    description: |
+      Indicates if the task was executed successful.
+    type: boolean
+  download_link:
+    description: |
+      Download link for the audio file.
+    type: string
+    format: url

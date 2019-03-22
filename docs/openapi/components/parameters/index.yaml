@@ -1,0 +1,6 @@
+task_id_p:
+  $ref: './task_id_p.yaml'
+youtube_id_p:
+  $ref: './youtube_id_p.yaml'
+audio_format_p:
+  $ref: './audio_format_p.yaml'

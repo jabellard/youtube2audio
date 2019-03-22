@@ -1,0 +1,7 @@
+description: |
+  Conversion status response object example.
+value:
+  task_id: ''
+  executed: false
+  successful: false
+  download_link: ''

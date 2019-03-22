@@ -1,0 +1,12 @@
+/downloader/convert:
+  $ref: './downloader_convert.yaml'
+/downloader/check_conversion_status/{task_id}:
+  $ref: './downloader_check_conversion_status.yaml'
+/downloader/download/{youtube_id}/{audio_format}:
+  $ref: './downloader_download.yaml'
+/docs/coreapi:
+  $ref: './docs_coreapi.yaml'
+/docs/openapi:
+  $ref: './docs_openapi.yaml'
+/_admin:
+  $ref: './_admin.yaml'

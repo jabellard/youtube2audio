@@ -1,0 +1,5 @@
+description: |
+  Conversion request object example.
+value:
+  url: ''
+  audio_format: ''

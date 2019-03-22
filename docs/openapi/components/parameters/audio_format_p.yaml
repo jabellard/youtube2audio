@@ -1,0 +1,8 @@
+name: audio_format
+in: path
+required: true
+description: |
+  Output audio format.
+schema:
+  type: string
+style: simple

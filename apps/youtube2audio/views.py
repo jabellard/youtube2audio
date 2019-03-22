@@ -64,8 +64,8 @@ class CheckConversionStatus(generics.RetrieveAPIView):
         data = {
             'task_id': task_id,
             'executed': False,
-            'successful': None,
-            'download_link': None
+            'successful': False,
+            'download_link': ''
         }
 
         if not task_result.ready():

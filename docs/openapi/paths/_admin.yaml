@@ -1,0 +1,13 @@
+put:
+  security: []
+  tags: []
+  description: |
+    API admin interface.
+  operationId: _admin_put
+  parameters: []
+  requestBody:
+    $ref: '#/components/requestBodies/command_put'
+  responses:
+    '200':
+      description: |
+            OK.

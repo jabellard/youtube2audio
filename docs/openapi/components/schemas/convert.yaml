@@ -1,0 +1,18 @@
+title: Conversion request object.
+description: |
+  Conversion request object.
+type: object
+properties:
+  url:
+    description: |
+      Youtube url.
+    type: string
+    format: url
+  audio_format:
+    description: |
+      Output audio format.
+    type: string
+    format: string
+required:
+  - url
+  - audio_format

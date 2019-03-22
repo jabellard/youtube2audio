@@ -1,0 +1,12 @@
+post:
+  security: []
+  tags: []
+  description: |
+    Request a video to audio conversion.
+  operationId: downloader_convert_post
+  parameters: []
+  requestBody:
+    $ref: '#/components/requestBodies/convert'
+  responses:
+    '200':
+      $ref: '#/components/responses/convert'

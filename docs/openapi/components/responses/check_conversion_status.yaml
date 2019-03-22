@@ -1,0 +1,8 @@
+description: |
+  Conversion status response object.
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/check_conversion_status_res.yaml'
+    example:
+      $ref: '../examples/check_conversion_status_res.yaml'

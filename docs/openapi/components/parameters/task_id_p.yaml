@@ -1,0 +1,8 @@
+name: task_id
+in: path
+required: true
+description: |
+  Task ID of a conversion request.
+schema:
+  type: string
+style: simple

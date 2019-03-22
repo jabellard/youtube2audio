@@ -1,0 +1,9 @@
+title: Conversion request response object.
+description: |
+  Conversion request response object.
+type: object
+properties:
+  conversion_status_link:
+    description: |
+      Link to check the status of the requested conversion.
+    type: string
